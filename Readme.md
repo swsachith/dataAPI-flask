@@ -7,3 +7,9 @@ Python packages (pip install)
 - python-dotenv
 - flask-sqlalchemy
 - flask-migrate
+
+
+Data Downloader:
+- requests
+- docopt
+- os

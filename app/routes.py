@@ -56,7 +56,8 @@ def get_user(current_user, public_id):
 def create_user(current_user):
     data = request.get_json()
     hashed_password = generate_password_hash(data['password'], method='sha256')
-    new_user = User(public_id=str(uuid.uuid4()), username=data['username'], password=hashed_password)
+    new_user = User(public_id=str(uuid.uuid4()), username=data['username'], password=hashed_password,
+                    email=data["email"])
     db.session.add(new_user)
     db.session.commit()
 
@@ -65,11 +66,10 @@ def create_user(current_user):
 
 @app.route('/download/<public_id>')
 @token_required
-def get_data(public_id, current_user):
+def get_data(current_user, public_id):
     data = Data.query.filter_by(public_id=public_id).first()
     if not data:
-        return jsonify({'message': "The file does not exist in the system!"})
-
+        return jsonify({'message': "The file does not exist in the system!"}), 401
     return send_file(BytesIO(data.data), attachment_filename=data.public_id, as_attachment=True)
 
 
