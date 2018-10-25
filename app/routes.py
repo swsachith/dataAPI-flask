@@ -43,7 +43,7 @@ def token_required(f):
 def get_user(current_user, public_id):
     user = User.query.filter_by(public_id=public_id).first()
     if not user:
-        return jsonify({'message': "The user does not exist in the system!"})
+        return jsonify({'message': "The user does not exist in the system!"}), 401
 
     user_data = {'public_id': user.public_id, 'username': user.username, 'password': user.password,
                  'email': user.email}
@@ -54,6 +54,9 @@ def get_user(current_user, public_id):
 @app.route('/user', methods=['POST'])
 @token_required
 def create_user(current_user):
+    if not current_user.admin:
+        return jsonify({'message': 'Not allowed to perform that function!'}), 401
+
     data = request.get_json()
     hashed_password = generate_password_hash(data['password'], method='sha256')
     new_user = User(public_id=str(uuid.uuid4()), username=data['username'], password=hashed_password,

@@ -6,7 +6,6 @@ Python packages (pip install)
 - pymysql
 - python-dotenv
 - flask-sqlalchemy
-- flask-migrate
 
 
 Data Downloader:
