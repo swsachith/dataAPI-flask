@@ -1,7 +1,9 @@
+from io import BytesIO
+
 from app import app
-from app.models import User
+from app.models import User, Data
 from functools import wraps
-from flask import request, jsonify, make_response
+from flask import request, jsonify, make_response, send_file
 import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
 import uuid
@@ -12,7 +14,7 @@ import datetime
 @app.route('/')
 @app.route('/index')
 def index():
-    return "Hello World!"
+    return "Hi, Please login using /login!"
 
 
 def token_required(f):
@@ -59,6 +61,16 @@ def create_user(current_user):
     db.session.commit()
 
     return jsonify({'message': 'New user created!'})
+
+
+@app.route('/download/<public_id>')
+@token_required
+def get_data(public_id, current_user):
+    data = Data.query.filter_by(public_id=public_id).first()
+    if not data:
+        return jsonify({'message': "The file does not exist in the system!"})
+
+    return send_file(BytesIO(data.data), attachment_filename=data.public_id, as_attachment=True)
 
 
 @app.route('/login')

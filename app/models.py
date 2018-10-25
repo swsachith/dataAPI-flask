@@ -10,3 +10,11 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
+
+
+class Data(db.Model):
+    public_id = db.Column(db.String(50), primary_key=True)
+    data = db.Column(db.BLOB())
+
+    def __repr__(self):
+        return '<Data {}>'.format(self.public_id)
