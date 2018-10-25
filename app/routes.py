@@ -58,9 +58,10 @@ def create_user(current_user):
         return jsonify({'message': 'Not allowed to perform that function!'}), 401
 
     data = request.get_json()
+    admin = (data["admin"].lower() == "true")
     hashed_password = generate_password_hash(data['password'], method='sha256')
     new_user = User(public_id=str(uuid.uuid4()), username=data['username'], password=hashed_password,
-                    email=data["email"])
+                    email=data["email"], admin=admin)
     db.session.add(new_user)
     db.session.commit()
 
