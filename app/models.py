@@ -15,7 +15,7 @@ class User(db.Model):
 
 class Data(db.Model):
     public_id = db.Column(db.String(50), primary_key=True)
-    data = db.Column(db.BLOB())
+    data = db.Column(db.LargeBinary)
 
     def __repr__(self):
         return '<Data {}>'.format(self.public_id)

@@ -32,7 +32,7 @@ def token_required(f):
             data = jwt.decode(token, app.config['SECRET_KEY'])
             current_user = User.query.filter_by(public_id=data['public_id']).first()
         except:
-            return jsonify({'message' : 'Token is invalid, please refresh the token!'}), 401
+            return jsonify({'message': 'Token is invalid, please refresh the token!'}), 401
 
         return f(current_user, *args, **kwargs)
     return decorated
@@ -77,12 +77,25 @@ def get_data(current_user, public_id):
     return send_file(BytesIO(data.data), attachment_filename=data.public_id, as_attachment=True)
 
 
+@app.route('/upload', methods=['POST'])
+@token_required
+def upload_data(current_user):
+    if not current_user.admin:
+        return jsonify({'message': 'Not allowed to perform that function!'}), 401
+
+    file = request.files["file"]
+    new_data = Data(public_id=str(uuid.uuid4()), data=file.read())
+    db.session.add(new_data)
+    db.session.commit()
+    return jsonify({'message': 'New data added!'})
+
+
 @app.route('/login')
 def login():
     auth = request.authorization
 
     if not auth or not auth.username or not auth.password:
-        return make_response('Could not verify', 401, {'WWW-Authenticate': 'Basic realm="Login required!"'})
+        return make_response('Please provide the username and the password', 401, {'WWW-Authenticate': 'Basic realm="Login required!"'})
 
     user = User.query.filter_by(username=auth.username).first()
 
