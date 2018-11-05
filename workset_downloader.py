@@ -22,7 +22,8 @@ from docopt import docopt
 from os import mkdir
 from os.path import exists, join
 
-DATA_API_URL = "http://localhost:5000"
+#DATA_API_URL = "http://localhost:5000"
+DATA_API_URL = "http://156.56.176.81:5000"
 TOKEN_FILE_NAME = "api.token"
 DATA_FOLDER = "data"
 
