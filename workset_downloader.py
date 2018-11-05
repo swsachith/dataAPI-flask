@@ -35,7 +35,7 @@ def download_workset(username, password, id_list):
     if not authorize_user(username, password):
         return
     else:
-        for public_id in id_list.split(","):
+        for public_id in id_list:
             download_data(public_id)
 
 
@@ -83,7 +83,7 @@ def main():
     """
     arguments = docopt(__doc__, version='IMLS Workset Downloader 1.0')
     if arguments["--ids"]:
-        download_workset(arguments["<username>"], arguments["<password>"], arguments["<input>"])
+        download_workset(arguments["<username>"], arguments["<password>"], arguments["<input>"].split(","))
     elif arguments["--file"]:
         ids = []
         with open(arguments["<input>"]) as file:
