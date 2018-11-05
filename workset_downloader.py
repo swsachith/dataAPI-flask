@@ -1,7 +1,7 @@
 """IMLS Workset Downloader.
 
 Usage:
-    workset_downloader.py <username> <password> <workset>
+    workset_downloader.py <username> <password> (--ids | --file) <inputIDs or fileName>
     workset_downloader.py -h
 
 Options:
@@ -11,7 +11,7 @@ Description:
     This authorizes against the data api and downloads the given data.
     username: username of the DC system.
     password: your password for the DC system.
-    workset: set of data ID's separated by commas.
+    input: set of data ID's separated by commas or file containing the workset ids separated by lines
 Example:
     python workset_downloader.py admin admin "123,2232"
 
@@ -82,7 +82,14 @@ def main():
 
     """
     arguments = docopt(__doc__, version='IMLS Workset Downloader 1.0')
-    download_workset(arguments["<username>"], arguments["<password>"], arguments["<workset>"])
+    if arguments["--ids"]:
+        download_workset(arguments["<username>"], arguments["<password>"], arguments["<input>"])
+    elif arguments["--file"]:
+        ids = []
+        with open(arguments["<input>"]) as file:
+            for line in file:
+                ids.append(line.strip())
+        download_workset(arguments["<username>"], arguments["<password>"], ids)
 
 
 if __name__ == "__main__":
