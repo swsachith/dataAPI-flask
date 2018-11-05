@@ -1,7 +1,7 @@
 """IMLS Workset Downloader.
 
 Usage:
-    workset_downloader.py <username> <password> (--ids | --file) <inputIDs or fileName>
+    workset_downloader.py <username> <password> (--ids | --file) <input>
     workset_downloader.py -h
 
 Options:
@@ -11,7 +11,7 @@ Description:
     This authorizes against the data api and downloads the given data.
     username: username of the DC system.
     password: your password for the DC system.
-    input: set of data ID's separated by commas or file containing the workset ids separated by lines
+    input: set of data ID's separated by commas or file containing the workset ids in separate lines
 Example:
     python workset_downloader.py admin admin "123,2232"
 
