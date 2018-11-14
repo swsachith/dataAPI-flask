@@ -13,7 +13,8 @@ Description:
     password: your password for the DC system.
     input: set of data ID's separated by commas or file containing the workset ids in separate lines
 Example:
-    python workset_downloader.py admin admin "123,2232"
+    python workset_downloader.py admin admin --ids "123,2232"
+    python workset_downloader.py admin admin --file workset.txt
 
 """
 import requests
